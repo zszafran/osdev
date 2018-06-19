@@ -1,0 +1,1 @@
+void print_multiboot(unsigned long magic, unsigned long addr);

@@ -12,6 +12,10 @@ RUN emerge \
   app-shells/zsh \
   app-shells/zsh-completions \
   app-shells/gentoo-zsh-completions
+COPY zshrc /root/.zshrc
+
+# VIM
+RUN emerge app-editors/vim
 
 # Oh-My-Zsh
 RUN emerge net-misc/curl dev-vcs/git
@@ -61,4 +65,4 @@ RUN emerge app-emulation/qemu
 # Portage Cleanup
 RUN rm -rf /var/tmp/portage
 
-CMD ["/bin/zsh", "-c", "cd /usr/src/osdev; zsh"]
+CMD ["/bin/zsh", "-c", "cd /usr/src/osdev/src; zsh"]
