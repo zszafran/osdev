@@ -1,6 +1,7 @@
 SYSTEM_HEADER_PROJECTS="libc kernel"
 PROJECTS="libc kernel"
 
+export OSNAME="osdev"
 export MAKE=${MAKE:-make}
 export HOST=${HOST:-$(./default-host.sh)}
 

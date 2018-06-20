@@ -6,5 +6,6 @@ docker run \
   --hostname="osdev" \
   --name=osdev \
   --volume="${PWD}:/usr/src/osdev" \
+  --publish="1234:1234" \
   --privileged \
   osdev

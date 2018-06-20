@@ -7,4 +7,5 @@ qemu-system-$(./target-triplet-to-arch.sh $HOST) \
 	-curses \
 	-vga std \
 	-serial mon:stdio \
-  -cdrom myos.iso
+	-cpu max \
+  -cdrom ${OSNAME}.iso
