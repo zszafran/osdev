@@ -6,6 +6,14 @@ Proof of concept kernel/operating-system.
 
 - [OsDev Wiki](https://wiki.osdev.org/)
 - [Writing an OS in Rust](https://os.phil-opp.com/first-edition/)
+- [Booting from Grub2 to x86 long mode ](http://ringzeroandlower.com/2017/08/08/x86-64-kernel-boot.html)
+
+References
+
+- [PhoeniX OS](https://git.phoenix.dj/phoenix/phoenix-os/tree/master)
+- [Antares Kernel](https://github.com/Such13373rHax0r/ANTARES-KERNEL)
+- [Dennix](https://github.com/dennis95/dennix)
+- [Aura](https://github.com/neonorb/aura)
 
 ## Development Environment
 
@@ -40,11 +48,12 @@ Ctrl A + X
 - [x] Terminal escape codes
 - [x] Multiboot2
 - [ ] Parse boot info
-- [ ] x86_64
+- [x] x86_64
 - [ ] C++
 - [ ] Bazel
-- [ ] Long Mode
+- [x] Long Mode
 - [ ] Paging
 - [ ] Interrupts
 - [ ] SysCalls
 - [ ] User Space
+- [ ] uEFI
