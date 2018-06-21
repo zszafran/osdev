@@ -1,5 +1,4 @@
-#ifndef ANSI_H
-#define ANSI_H
+#pragma once
 
 #include <stdint.h>
 
@@ -29,5 +28,3 @@ typedef struct ansi_color_char
 
 struct ansi_state ansi_init(void);
 struct ansi_color_char ansi_process(struct ansi_state *state, char x);
-
-#endif

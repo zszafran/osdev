@@ -1,5 +1,4 @@
-#ifndef _STDLIB_H
-#define _STDLIB_H 1
+#pragma once
 
 #include <sys/cdefs.h>
 
@@ -13,6 +12,4 @@ extern "C"
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

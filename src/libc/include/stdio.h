@@ -1,5 +1,4 @@
-#ifndef _STDIO_H
-#define _STDIO_H 1
+#pragma once
 
 #include <stdarg.h>
 #include <sys/cdefs.h>
@@ -21,6 +20,4 @@ extern "C"
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

@@ -1,12 +1,18 @@
-#ifndef BOOT_INFO_H
-#define BOOT_INFO_H
+#pragma once
 
+#include <stdint.h>
 #include <boot/multiboot2.h>
 
 typedef struct boot_info
 {
   uint32_t physical_address;
   uint32_t size;
+
+  uintptr_t kernel_start;
+  uintptr_t kernel_end;
+
+  uintptr_t multiboot_start;
+  uintptr_t multiboot_end;
 
   struct multiboot_tag_string *command_line_tag;
   struct multiboot_tag_string *boot_loader_name_tag;
@@ -24,5 +30,3 @@ typedef struct boot_info
 
 void read_multiboot(boot_info_t *self);
 void print_boot_info(boot_info_t *self);
-
-#endif

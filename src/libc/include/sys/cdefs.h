@@ -1,7 +1,3 @@
-#ifndef _SYS_CDEFS_H
-#define _SYS_CDEFS_H 1
+#pragma once
 
 #define __myos_libc 1
-#define NULL 0
-
-#endif
