@@ -8,12 +8,14 @@ Proof of concept kernel/operating-system.
 - [Writing an OS in Rust](https://os.phil-opp.com/first-edition/)
 - [Booting from Grub2 to x86 long mode ](http://ringzeroandlower.com/2017/08/08/x86-64-kernel-boot.html)
 
-References
+## References
 
 - [PhoeniX OS](https://git.phoenix.dj/phoenix/phoenix-os/tree/master)
 - [Antares Kernel](https://github.com/Such13373rHax0r/ANTARES-KERNEL)
 - [Dennix](https://github.com/dennis95/dennix)
 - [Aura](https://github.com/neonorb/aura)
+- [kOS](https://github.com/kissthink/kos)
+- [Baremetal x86_64](https://github.com/winksaville/baremetal-x86_64)
 
 ## Development Environment
 
@@ -35,7 +37,8 @@ Once inside the development envorinment one can use the helper scripts to build 
 
 ## Debugging
 
-TODO: figure this out
+(gdb) set arch i386:x86-64
+(gdb) target remote localhost:1234
 
 ## Exit Kernel Emulator
 
@@ -57,3 +60,5 @@ Ctrl A + X
 - [ ] SysCalls
 - [ ] User Space
 - [ ] uEFI
+- [ ] Bootloader error codes -> ascii
+- [ ] SSE

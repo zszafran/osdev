@@ -7,9 +7,11 @@
     {
       "name": "Debug",
       "type": "gdb",
-      "request": "launch",
+      "request": "attach",
+      "executable": "src/kernel/kernel.bin",
       "cwd": "${workspaceRoot}",
-      "target": ":1234"
+      "target": "localhost:1234",
+      "remote": true
     }
   ]
 }

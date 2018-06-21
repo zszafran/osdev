@@ -4,6 +4,8 @@
   .global check_cpuid
   .global check_extended_cpuid
   .global check_long_mode
+  .global check_sse
+
   # Prints `ERR: ` and the given error code to screen and hangs.
 	# parameter: error code (in ascii) in al
 	error:
@@ -18,9 +20,9 @@
     jne .no_multiboot
     ret
 
-	.no_multiboot:
-		movb $'0', %al
-		jmp error
+    .no_multiboot:
+      movb $'0', %al
+      jmp error
 
 	check_cpuid:
     # Check if CPUID is supported by attempting to flip the ID bit (bit 21)
@@ -55,9 +57,9 @@
     jz .no_cpuid
     ret
 
-	.no_cpuid:
-    movb $'1', %al
-    jmp error
+    .no_cpuid:
+      movb $'1', %al
+      jmp error
 
 	check_extended_cpuid:
     # test if extended processor info in available
@@ -67,9 +69,9 @@
     jb .no_extended_cpuid    # if it's less, the CPU is too old for long mode
 		ret
 
-	.no_extended_cpuid:
-		mov $'2', %al
-		jmp error
+    .no_extended_cpuid:
+      movb $'2', %al
+      jmp error
 
 	check_long_mode:
     # use extended info to test if long mode is available
@@ -79,8 +81,20 @@
     jz .no_long_mode        # If it's not set, there is no long mode
     ret
 
-	.no_long_mode:
-		mov $'3', %al
-		jmp error
+    .no_long_mode:
+      movb $'3', %al
+      jmp error
+
+  check_sse:
+    # check for SSE
+    movl $0x1, %eax
+    cpuid
+    testl $1<<25, %edx
+    jz .no_sse
+    ret
+
+    .no_sse:
+      movb $'a', %al
+      jmp error
 
   .size error, . - error

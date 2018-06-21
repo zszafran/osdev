@@ -8,4 +8,5 @@ qemu-system-$(./target-triplet-to-arch.sh $HOST) \
 	-vga std \
 	-serial mon:stdio \
 	-cpu max \
+	-s \
   -cdrom ${OSNAME}.iso

@@ -23,7 +23,7 @@ void terminal_initialize(void)
   terminal_column = 0;
   terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
   terminal_buffer = VGA_MEMORY;
-  //terminal_color_state = ansi_init();
+  terminal_color_state = ansi_init();
   terminal_clear();
 }
 
@@ -104,13 +104,12 @@ void terminal_write(const char *data, size_t size)
 {
   for (size_t i = 0; i < size; i++)
   {
-    // struct ansi_color_char color_char = ansi_process(&terminal_color_state, data[i]);
-    // if (color_char.ascii != '\0')
-    // {
-    //   terminal_setcolor(color_char.color);
-    //   terminal_putchar(color_char.ascii);
-    // }
-    terminal_putchar(data[i]);
+    struct ansi_color_char color_char = ansi_process(&terminal_color_state, data[i]);
+    if (color_char.ascii != '\0')
+    {
+      terminal_setcolor(color_char.color);
+      terminal_putchar(color_char.ascii);
+    }
   }
 }
 
