@@ -101,10 +101,8 @@ A general workflow should be:
 - [x] Scrolling Terminal
 - [x] Terminal escape codes
 - [x] Multiboot2
-- [ ] Parse boot info
+- [x] Parse boot info
 - [x] x86_64
-- [ ] C++
-- [ ] Bazel
 - [x] Long Mode
 - [ ] Paging
 - [ ] Interrupts

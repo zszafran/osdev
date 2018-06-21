@@ -22,8 +22,8 @@ void read_multiboot(boot_info_t *self)
     return;
   }
 
-  self->physical_address = multiboot_ptr;
-  self->size = *(unsigned long *)multiboot_ptr;
+  self->multiboot_start = multiboot_ptr;
+  self->multiboot_end = multiboot_ptr + *(unsigned long *)multiboot_ptr;
 
   struct multiboot_tag *tag = (struct multiboot_tag *)(multiboot_ptr + 8);
 
@@ -72,12 +72,30 @@ void read_multiboot(boot_info_t *self)
 
     case MULTIBOOT_TAG_TYPE_MODULE:
       self->module_tag = (struct multiboot_tag_module *)tag;
-
-    default:
-      warn("\tUnknown Multiboot Tag 0x%x, Size 0x%x", tag->type, tag->size);
     }
 
     tag = (struct multiboot_tag *)((uint8_t *)tag + ((tag->size + 7) & ~7));
+  }
+
+  if (self->elf_sections_tag)
+  {
+    elf_section_t *section;
+    for (uintptr_t i = 1; i < self->elf_sections_tag->num; i++)
+    {
+      section = (elf_section_t *)(self->elf_sections_tag->sections + self->elf_sections_tag->entsize * i);
+
+      if (!self->kernel_start)
+        self->kernel_start = section->addr;
+
+      if (!self->kernel_end)
+        self->kernel_end = section->addr;
+
+      if (section->addr < self->kernel_start)
+        self->kernel_start = section->addr;
+
+      if (section->addr > self->kernel_end)
+        self->kernel_end = section->addr;
+    }
   }
 
   self->end_tag = tag;
@@ -86,10 +104,6 @@ void read_multiboot(boot_info_t *self)
 void print_boot_info(boot_info_t *self)
 {
   log("Boot Info:");
-
-  log("\tAddress: 0x%x", self->physical_address);
-
-  log("\tSize: 0x%x", self->size);
 
   log("\tCommand line = %s", self->command_line_tag->string);
 
@@ -154,5 +168,7 @@ void print_boot_info(boot_info_t *self)
         self->framebuffer_tag->framebuffer_palette_num_colors);
   }
 
-  log("\tTotal mbi size 0x%x", ((unsigned long)self->end_tag - self->physical_address));
+  log("\tKernel: start = 0x%x, end = 0x%x", self->kernel_start, self->kernel_end);
+
+  log("\tMultiboot: start = 0x%x, end = 0x%x", self->multiboot_start, self->multiboot_end);
 }

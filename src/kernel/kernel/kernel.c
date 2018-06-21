@@ -11,7 +11,10 @@ void kmain()
 {
   read_multiboot(&boot_info);
 
-  terminal_initialize();
+  terminal_initialize(
+      boot_info.framebuffer_tag->common.framebuffer_addr,
+      boot_info.framebuffer_tag->common.framebuffer_width,
+      boot_info.framebuffer_tag->common.framebuffer_height);
 
   log("Booting...");
 
