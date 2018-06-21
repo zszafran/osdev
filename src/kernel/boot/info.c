@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <boot/multiboot2.h>
+#include <boot/elf.h>
 #include <boot/info.h>
 #include <kernel/log.h>
 
@@ -111,39 +112,46 @@ void print_boot_info(boot_info_t *self)
   if (self->elf_sections_tag)
   {
     log("\tELF Sections:");
-    log("\t\tType = 0x%x", self->elf_sections_tag->type);
-    log("\t\tSize = 0x%x", self->elf_sections_tag->size);
-    log("\t\tCount = 0x%x", self->elf_sections_tag->num);
-    log("\t\tEntity Size = 0x%x", self->elf_sections_tag->entsize);
-    log("\t\tShndx = 0x%x", self->elf_sections_tag->shndx);
+    elf_section_t *section;
+    for (uintptr_t i = 1; i < self->elf_sections_tag->num; i++)
+    {
+      section = (elf_section_t *)(self->elf_sections_tag->sections + self->elf_sections_tag->entsize * i);
+      log("\t\taddr = 0x%x%x, offset = 0x%x, size = 0x%x, flags = 0x%x",
+          section->addr,
+          section->offset,
+          section->size,
+          section->flags);
+    }
   }
 
   if (self->memory_map_tag)
   {
     int entry_count = self->memory_map_tag->size / self->memory_map_tag->entry_size;
     log("\tMemory Map: numEntries=0x%x", entry_count);
+
+    multiboot_memory_map_t *mmap;
     for (int i = 0; i < entry_count; i++)
     {
-      multiboot_memory_map_t *mmap = ((uint8_t *)self->memory_map_tag->entries + (i * self->memory_map_tag->entry_size));
-      log("\t\tbase_addr = 0x%x%x,"
-          " length = 0x%x%x, type = 0x%x",
+      mmap = ((uint8_t *)self->memory_map_tag->entries + (i * self->memory_map_tag->entry_size));
+      log("\t\tbase_addr = 0x%x%x, length = 0x%x%x, type = 0x%x",
           (unsigned)(mmap->addr >> 32),
           (unsigned)(mmap->addr & 0xffffffff),
           (unsigned)(mmap->len >> 32),
           (unsigned)(mmap->len & 0xffffffff),
           (unsigned)mmap->type);
     }
+  }
 
-    if (self->framebuffer_tag)
-    {
-      log("\tFramebuffer:");
-      log("\t\tAddress = 0x%x", self->framebuffer_tag->common.framebuffer_addr);
-      log("\t\tType = 0x%x", self->framebuffer_tag->common.framebuffer_type);
-      log("\t\tWidth = 0x%x", self->framebuffer_tag->common.framebuffer_width);
-      log("\t\tHeight = 0x%x", self->framebuffer_tag->common.framebuffer_height);
-      log("\t\tPitch = 0x%x", self->framebuffer_tag->common.framebuffer_pitch);
-      log("\t\tColors = 0x%x", self->framebuffer_tag->framebuffer_palette_num_colors);
-    }
+  if (self->framebuffer_tag)
+  {
+    log("\tFramebuffer: addr = 0x%x, type = 0x%x",
+        self->framebuffer_tag->common.framebuffer_addr,
+        self->framebuffer_tag->common.framebuffer_type);
+    log("\t\twidth = 0x%x, height = 0x%x, pitch = 0x%x, colors = 0x%x",
+        self->framebuffer_tag->common.framebuffer_width,
+        self->framebuffer_tag->common.framebuffer_height,
+        self->framebuffer_tag->common.framebuffer_pitch,
+        self->framebuffer_tag->framebuffer_palette_num_colors);
   }
 
   log("\tTotal mbi size 0x%x", ((unsigned long)self->end_tag - self->physical_address));

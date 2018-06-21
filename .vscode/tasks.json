@@ -11,7 +11,8 @@
     {
       "label": "Stop Docker",
       "type": "shell",
-      "command": "docker stop osdev"
+      "command": "docker stop osdev",
+      "problemMatcher": []
     },
     {
       "label": "Clean",
