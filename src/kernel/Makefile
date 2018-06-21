@@ -30,8 +30,9 @@ LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
 KERNEL_OBJS=\
 $(KERNEL_ARCH_OBJS) \
 kernel/ansi.o \
-kernel/kernel.o \
+kernel/tty.o \
 kernel/log.o \
+kernel/kernel.o \
 boot/info.o \
 
 OBJS=\

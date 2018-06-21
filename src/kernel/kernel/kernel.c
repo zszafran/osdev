@@ -5,16 +5,17 @@
 #include <kernel/log.h>
 #include <boot/info.h>
 
-extern uint32_t multiboot_ptr;
-extern uint32_t multiboot_magic;
+boot_info_t boot_info;
 
 void kmain()
 {
+  read_multiboot(&boot_info);
+
   terminal_initialize();
 
   log("Booting...");
 
-  print_multiboot(multiboot_magic, multiboot_ptr);
+  print_boot_info(&boot_info);
 
   debug("Hello, kernel World!");
 }

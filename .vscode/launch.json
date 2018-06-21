@@ -5,13 +5,18 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Debug",
+      "name": "Attach to QEMU",
       "type": "gdb",
       "request": "attach",
-      "executable": "src/kernel/kernel.bin",
+      "executable": "./src/kernel/kernel.bin",
+      "gdbpath": "./tools/gdb/bin/x86_64-pc-linux-gnu-gdb",
       "cwd": "${workspaceRoot}",
-      "target": "localhost:1234",
-      "remote": true
+      "target": ":1234",
+      "remote": true,
+      "autorun": [
+        //"set sysroot ${workspaceRoot}"
+        "set substitute-path /usr/src/osdev ${workspaceRoot}"
+      ]
     }
   ]
 }
