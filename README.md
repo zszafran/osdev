@@ -104,8 +104,9 @@ A general workflow should be:
 - [x] Parse boot info
 - [x] x86_64
 - [x] Long Mode
-- [ ] Higher-half
-- [ ] Paging
+- [ ] Page Tables
+- [ ] Higher-half (remove identity maps)
+- [ ] Page/Frame Allocation
 - [ ] Interrupts
 - [ ] SysCalls
 - [ ] User Space

@@ -24,6 +24,10 @@
 		# Tests
 		call check_multiboot
 
+		# Paging
+		call setup_page_tables
+    call enable_paging
+
 		# Call the global constructors.
 		call _init
 
@@ -31,9 +35,28 @@
 		call EXT_C(kmain)
 
 		# Hang if kernel_main unexpectedly returns.
+		jmp halt
+
+	halt:
 		cli
-	1:	hlt
-		jmp 1b
+		hlt
+
+		.hang:
+			jmp .hang
+
+	setup_page_tables:
+		ret
+
+	enable_paging:
+		# Set cr3 to the address of the page_directory_table.
+		movl $page_directory_table, %ecx
+		movl %ecx, %cr3
+
+		# Enable paging and the write-protect bit.
+		movl %cr0, %ecx
+		orl $1 << 31, %eax
+		movl %ecx, %cr0
+		ret
 
 	.size _start, . - _start
 
@@ -52,7 +75,13 @@
 
 # Reserve a stack for the initial thread.
 .section .bss
-	.align 16
+	.align 4096
+
+	page_directory_table:
+		.skip 4096
+
+	paget_table:
+		.skip 4096
 
 	stack_bottom:
 		.skip 4096 * 4 # 16 KiB

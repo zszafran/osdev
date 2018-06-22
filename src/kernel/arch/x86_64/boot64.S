@@ -21,16 +21,26 @@
 		movw %ax, %gs
 		movw %ax, %ss
 
+		# OKAY means we are in full long mode
+		movq	$0x2f592f412f4b2f4f, %rax
+		movq	%rax, (0xb8000)
+
 		# Call the global constructors.
 		call _init
 
 		# Transfer control to the main kernel.
 		call EXT_C(kmain)
-		# movq $0x2f592f412f4b2f4f, %rax
-		# movq %rax, (0xb8000)
+		
+		# Returned from main
+		movq $0x2f542f4c2f412f48, %rax
+		movq %rax, (0xb8f98)
 
 		# Hang if kernel_main unexpectedly returns.
+		jmp halt
+
+	halt:
 		cli
-    hlt
-	1:
-		jmp 1b
+		hlt
+
+		.hang:
+			jmp .hang

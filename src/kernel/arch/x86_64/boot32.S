@@ -39,14 +39,10 @@
 	.extern check_sse
 
 	_start:
-		movl $stack_top, %esp
-
-		# Reset EFLAGS.
-		pushl $0
-		popf
-
 		movl %ebx, (multiboot_ptr)
 		movl %eax, (multiboot_magic)
+
+		movl $stack_top, %esp
 
 		# Tests
 		call check_multiboot
@@ -59,15 +55,11 @@
 		call setup_page_tables
     call enable_paging
 
-		# TODO: call enable_sse
-
 		# load the 64-bit GDT
     lgdt (gdt64_pointer)
 
 		# Long jump to 64-bit code
 		ljmp $gdt64_code_seg, $_start64
-		cli
-    hlt
 
 	setup_page_tables:
 
@@ -93,7 +85,8 @@
 			# map each P2 entry to a huge 2MiB page
 			mov $0, %ecx         # counter variable
 
-			.map_page_directory_table:
+			# identity map first 1G
+			.identity_map_page_directory_table:
 				# map ecx-th P2 entry to a huge page that starts at address 2MiB*ecx
 				movl 0x200000, %eax   # 2MiB
 				mul %ecx              # start address of ecx-th page
@@ -102,7 +95,7 @@
 
 				inc %ecx              # increase counter
 				cmp $512, %ecx        # if counter == 512, the whole P2 table is mapped
-				jne .map_page_directory_table  # else map the next entry
+				jne .identity_map_page_directory_table  # else map the next entry
 
 				ret
 
@@ -128,15 +121,6 @@
     mov %eax, %cr0
 
     ret
-
-	enable_sse:
-    movl %cr0, %eax
-    andw  $0xFFFB, %ax      # clear coprocessor emulation CR0.EM
-    orw $0x2, %ax           # set coprocessor monitoring  CR0.MP
-    movl %eax, %cr0
-    movl %cr4, %eax
-    orw $3 << 9, %ax       	# set CR4.OSFXSR and CR4.OSXMMEXCPT at the same time
-    movl %eax, %cr4
 
 	.size _start, . - _start
 
