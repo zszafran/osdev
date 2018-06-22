@@ -104,6 +104,7 @@ A general workflow should be:
 - [x] Parse boot info
 - [x] x86_64
 - [x] Long Mode
+- [ ] Higher-half
 - [ ] Paging
 - [ ] Interrupts
 - [ ] SysCalls

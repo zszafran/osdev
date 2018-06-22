@@ -56,9 +56,9 @@ $(ARCHDIR)/crtn.o \
 
 all: kernel.bin
 
-kernel.bin: $(OBJS) $(ARCHDIR)/linker.ld
+kernel.bin: $(OBJS) linker.ld
 	@echo -e "\n\e[33mLinking everything into $@...\e[0m"
-	$(CC) -T $(ARCHDIR)/linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
+	$(CC) -T linker.ld -o $@ $(CFLAGS) $(LINK_LIST)
 	grub-file --is-x86-multiboot2 kernel.bin
 
 $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
