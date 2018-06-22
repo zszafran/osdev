@@ -1,8 +1,9 @@
 #pragma once
 
 #include <stddef.h>
+#include <stdint.h>
 
-void terminal_initialize(unsigned long long framebuffer_addr,
+void terminal_initialize(uintptr_t framebuffer_addr,
                          unsigned int width,
                          unsigned int height);
 void terminal_clear(void);

@@ -23,9 +23,9 @@ void read_multiboot(boot_info_t *self)
   }
 
   self->multiboot_start = multiboot_ptr;
-  self->multiboot_end = multiboot_ptr + *(unsigned long *)multiboot_ptr;
 
-  struct multiboot_tag *tag = (struct multiboot_tag *)(multiboot_ptr + 8);
+  // skip 8 because the magic number is stored there
+  struct multiboot_tag *tag = (struct multiboot_tag *)((uintptr_t)(multiboot_ptr + 8));
 
   while (tag->type != MULTIBOOT_TAG_TYPE_END)
   {
@@ -99,6 +99,7 @@ void read_multiboot(boot_info_t *self)
   }
 
   self->end_tag = tag;
+  self->multiboot_end = (uintptr_t)(tag + tag->size);
 }
 
 void print_boot_info(boot_info_t *self)
@@ -146,7 +147,7 @@ void print_boot_info(boot_info_t *self)
     multiboot_memory_map_t *mmap;
     for (int i = 0; i < entry_count; i++)
     {
-      mmap = ((uint8_t *)self->memory_map_tag->entries + (i * self->memory_map_tag->entry_size));
+      mmap = (multiboot_memory_map_t *)((uint8_t *)self->memory_map_tag->entries + (i * self->memory_map_tag->entry_size));
       log("\t\tbase_addr = 0x%x%x, length = 0x%x%x, type = 0x%x",
           (unsigned)(mmap->addr >> 32),
           (unsigned)(mmap->addr & 0xffffffff),
@@ -168,7 +169,11 @@ void print_boot_info(boot_info_t *self)
         self->framebuffer_tag->framebuffer_palette_num_colors);
   }
 
-  log("\tKernel: start = 0x%x, end = 0x%x", self->kernel_start, self->kernel_end);
+  log("\tKernel: start = 0x%x, end = 0x%x",
+      self->kernel_start,
+      self->kernel_end);
 
-  log("\tMultiboot: start = 0x%x, end = 0x%x", self->multiboot_start, self->multiboot_end);
+  log("\tMultiboot: start = 0x%x, end = 0x%x",
+      self->multiboot_start,
+      self->multiboot_end);
 }

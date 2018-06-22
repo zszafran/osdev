@@ -5,7 +5,6 @@
 
 typedef struct boot_info
 {
-  uint32_t physical_address;
   uint32_t size;
 
   uintptr_t kernel_start;

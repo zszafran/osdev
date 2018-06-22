@@ -15,7 +15,7 @@ static uint8_t terminal_color;
 static uint16_t *terminal_buffer;
 static struct ansi_state terminal_color_state;
 
-void terminal_initialize(unsigned long long framebuffer_addr,
+void terminal_initialize(uintptr_t framebuffer_addr,
                          unsigned int width,
                          unsigned int height)
 {
