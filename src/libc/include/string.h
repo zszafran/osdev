@@ -4,6 +4,8 @@
 
 #include <stddef.h>
 
+typedef char *string_t;
+
 #ifdef __cplusplus
 extern "C"
 {

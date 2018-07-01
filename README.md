@@ -18,6 +18,7 @@ This is a hobbyist project with the goal of building everything from scratch.
 - [Aura](https://github.com/neonorb/aura)
 - [kOS](https://github.com/kissthink/kos)
 - [Baremetal x86_64](https://github.com/winksaville/baremetal-x86_64)
+- [Klosy Legacy](https://github.com/kodo-pp/klosy-legacy)
 
 ## Development Environment
 
@@ -105,7 +106,7 @@ A general workflow should be:
     - [x] [x86_64 - Long Mode](https://wiki.osdev.org/Long_Mode)
   - [x] [Calling Global Constructors](https://wiki.osdev.org/Calling_Global_Constructors)
   - [x] [Terminal Support](https://wiki.osdev.org/index.php?title=Printf&action=edit&redlink=1)
-  - [ ] [Stack Smash Protector](https://wiki.osdev.org/Stack_Smashing_Protector)
+  - [x] [Stack Smash Protector](https://wiki.osdev.org/Stack_Smashing_Protector)
   - [x] [Multiboot](https://wiki.osdev.org/Multiboot)
   - [x] [Global Descriptor Table](https://wiki.osdev.org/Global_Descriptor_Table)
   - [ ] [Memory Management](https://wiki.osdev.org/Memory_Management)
