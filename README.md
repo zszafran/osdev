@@ -112,6 +112,7 @@ A general workflow should be:
   - [ ] [Memory Management](https://wiki.osdev.org/Memory_Management)
     - [x] [Page Tables](https://wiki.osdev.org/Setting_Up_Paging)
     - [ ] [Higher Half](https://wiki.osdev.org/Higher_Half_x86_Bare_Bones)
+    - [ ] [Page Frame Allocation](https://wiki.osdev.org/Page_Frame_Allocation)
   - [ ] [Interrupts](https://wiki.osdev.org/Interrupts)
   - [ ] [Multithreaded Kernel](https://wiki.osdev.org/index.php?title=Multithreaded_Kernel&action=edit&redlink=1)
   - [ ] [Keyboard](https://wiki.osdev.org/Keyboard)

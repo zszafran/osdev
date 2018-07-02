@@ -36,7 +36,6 @@
 		.byte 0xcf				# high 4 bits (flags) low 4 bits (limit 4 last bits)(limit is 20 bit wide)
 		.byte 0x0					# base 24-31 bits
 
-
 	gdt_pointer:
 		.set gdt_limit, gdt_pointer - gdt - 1
 		.word gdt_limit
