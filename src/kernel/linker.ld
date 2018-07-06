@@ -1,58 +1,58 @@
-/* The bootloader will look at this image and start execution at the symbol
-   designated at the entry point. */
 ENTRY(_start)
 
-/* Tell where the various sections of the object files will be put in the final
-   kernel image. */
+#include <kernel/kernel.h>
+
+#define SECTION(name) \
+    name BLOCK(4K) : ALIGN(4K)
+
+#define DEFINE_START(name) \
+    _##name##_START = ABSOLUTE(.);
+
+#define DEFINE_END(name) \
+    _##name##_SIZE = ABSOLUTE(.) - _##name##_START;
+
 SECTIONS
 {
-	/* Begin putting sections at 1 MiB, a conventional place for kernels to be
-	   loaded at by the bootloader. */
-	. = 1M;
+	. = KERNEL_PHYSICAL_ADDR;
 
-	_kernel_start = .;
+	DEFINE_START(KERNEL)
 
-	/* First put the multiboot header, as it is required to be put very early
-	   early in the image or the bootloader won't recognize the file format.
-	   Next we'll put the .text section. */
-	.boot BLOCK(4K) : ALIGN(4K)
+	SECTION(.boot)
 	{
+		DEFINE_START(BOOT)
 		KEEP(*(.multiboot))
+		DEFINE_END(BOOT)
 	}
 
-	/* Text data. */
-	.text BLOCK(4K) : ALIGN(4K)
+	SECTION(.text)
 	{
+		DEFINE_START(TEXT)
 		*(.text .text.*)
+		DEFINE_END(TEXT)
 	}
 
-	/* Read-only data. */
-	.rodata BLOCK(4K) : ALIGN(4K)
+	SECTION(.rodata)
 	{
-			*(.rodata .rodata.*)
+		DEFINE_START(RODATA)
+		*(.rodata .rodata.*)
+		*(.data.rel.ro.local*) *(.data.rel.ro .data.rel.ro.*)
+		DEFINE_END(RODATA)
 	}
 
-	/* Read-only data. */
-	.data.rel.ro BLOCK(4K) : ALIGN(4K)
+	SECTION(.data)
 	{
-			*(.data.rel.ro.local*) *(.data.rel.ro .data.rel.ro.*)
-	}
-
-	/* Read-write data (initialized) */
-	.data BLOCK(4K) : ALIGN(4K)
-	{
+		DEFINE_START(DATA)
 		*(.data .data.*)
+		DEFINE_END(DATA)
 	}
 
-	/* Read-write data (uninitialized) and stack */
-	.bss BLOCK(4K) : ALIGN(4K)
+	SECTION(.bss)
 	{
+		DEFINE_START(BBS)
 		*(COMMON)
 		*(.bss .bss.*)
+		DEFINE_END(BBS)
 	}
 
-	/* The compiler may produce other sections, put them in the proper place in
-	   in this file, if you'd like to include them in the final kernel. */
-
-	_kernel_end = .;
+	DEFINE_END(KERNEL)
 }

@@ -9,6 +9,7 @@ This is a hobbyist project with the goal of building everything from scratch.
 - [OsDev Wiki](https://wiki.osdev.org/)
 - [Writing an OS in Rust](https://os.phil-opp.com/first-edition/)
 - [Booting from Grub2 to x86 long mode ](http://ringzeroandlower.com/2017/08/08/x86-64-kernel-boot.html)
+- [Inline Assembly/Examples](https://wiki.osdev.org/Inline_Assembly/Examples)
 
 ## References
 
