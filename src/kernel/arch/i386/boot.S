@@ -74,9 +74,6 @@
 		call setup_page_tables
 		call enable_paging
 
-		# Call the global constructors.
-		call _init
-
 		# Transfer control to the main kernel.
 		call EXT_C(kmain)
 

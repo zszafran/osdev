@@ -25,9 +25,6 @@
 		movq	$0x2f592f412f4b2f4f, %rax
 		movq	%rax, (0xb8000)
 
-		# Call the global constructors.
-		call _init
-
 		# Transfer control to the main kernel.
 		call EXT_C(kmain)
 		

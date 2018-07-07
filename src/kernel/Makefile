@@ -30,26 +30,19 @@ LIBS:=$(LIBS) $(KERNEL_ARCH_LIBS)
 KERNEL_OBJS=\
 $(KERNEL_ARCH_OBJS) \
 kernel/ansi.o \
+kernel/ctor.o \
 kernel/tty.o \
 kernel/log.o \
 kernel/kernel.o \
 boot/info.o \
 
 OBJS=\
-$(ARCHDIR)/crti.o \
-$(ARCHDIR)/crtbegin.o \
 $(KERNEL_OBJS) \
-$(ARCHDIR)/crtend.o \
-$(ARCHDIR)/crtn.o \
 
 LINK_LIST=\
 $(LDFLAGS) \
-$(ARCHDIR)/crti.o \
-$(ARCHDIR)/crtbegin.o \
 $(KERNEL_OBJS) \
 $(LIBS) \
-$(ARCHDIR)/crtend.o \
-$(ARCHDIR)/crtn.o \
 
 .PHONY: all clean install install-headers install-kernel
 .SUFFIXES: .o .c .S
@@ -64,9 +57,6 @@ kernel.bin: $(OBJS) linker.gen.ld
 linker.gen.ld: $(OBJS) linker.ld
 	@echo -e "\n\e[33mGenerating link script $@...\e[0m"
 	$(CC) -P -D__ASM__ -E -x c linker.ld | grep -v '^#' > $@
-
-$(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
-	OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
 .c.o:
 	@echo -e "\n\e[33mCompiling $<\e[0m"

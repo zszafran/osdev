@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
+#include <kernel/ctor.h>
 #include <kernel/tty.h>
 #include <kernel/log.h>
 #include <boot/info.h>
@@ -17,6 +18,8 @@ void kmain()
       boot_info.framebuffer_tag->common.framebuffer_height);
 
   log("Booting...");
+
+  init_ctors();
 
   print_boot_info(&boot_info);
 

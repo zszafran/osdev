@@ -17,32 +17,24 @@ SECTIONS
 
 	DEFINE_START(KERNEL)
 
-	SECTION(.boot)
-	{
-		DEFINE_START(BOOT)
-		KEEP(*(.multiboot))
-		DEFINE_END(BOOT)
-	}
-
 	SECTION(.text)
 	{
 		DEFINE_START(TEXT)
+		KEEP(*(.multiboot))
 		*(.text .text.*)
-		DEFINE_END(TEXT)
-	}
-
-	SECTION(.rodata)
-	{
-		DEFINE_START(RODATA)
 		*(.rodata .rodata.*)
 		*(.data.rel.ro.local*) *(.data.rel.ro .data.rel.ro.*)
-		DEFINE_END(RODATA)
+		DEFINE_END(TEXT)
 	}
 
 	SECTION(.data)
 	{
 		DEFINE_START(DATA)
 		*(.data .data.*)
+		DEFINE_START(CTORS)
+    *(.ctor*)
+		LONG(0)
+    DEFINE_END(CTORS)
 		DEFINE_END(DATA)
 	}
 
