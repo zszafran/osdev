@@ -61,9 +61,9 @@ kernel.bin: $(OBJS) linker.gen.ld
 	$(CC) -T linker.gen.ld -o $@ $(CFLAGS) $(LINK_LIST)
 	grub-file --is-x86-multiboot2 kernel.bin
 
-linker.gen.ld: linker.ld
+linker.gen.ld: $(OBJS) linker.ld
 	@echo -e "\n\e[33mGenerating link script $@...\e[0m"
-	$(CC) -E -x c linker.ld | grep -v '^#' > $@
+	$(CC) -P -D__ASM__ -E -x c linker.ld | grep -v '^#' > $@
 
 $(ARCHDIR)/crtbegin.o $(ARCHDIR)/crtend.o:
 	OBJ=`$(CC) $(CFLAGS) $(LDFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
